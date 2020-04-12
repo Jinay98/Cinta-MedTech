@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+    <title>Home</title>
+{% endblock %}
+
+
+{% block body %}
+
+
+    <div class="container">
+        <div class="container" align="center"><b>
+            <p style="font-size: 35px">Add Patient Details</p>
+        </b></div>
+        <form class="form-horizontal" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <br><br><br><br>
+                <label class="control-label col-sm-2" for="name" style="font-size:20px">Name of Patient:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="name" placeholder="Name of Patient" name="name"
+                           style="font-size: 18px"/>
+                    <br><br>
+                </div>
+                <label class="control-label col-sm-2" for="age" style="font-size:20px">Age of Patient:</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" id="age" placeholder="Age of Patient" name="age"
+                           style="font-size: 18px"/>
+                    <br><br>
+                </div>
+                <label class="control-label col-sm-2" for="gender" style="font-size:20px">Gender of Patient:</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="gender" placeholder="Gender of Patient" name="gender"
+                           style="font-size: 18px"/>
+                    <br><br>
+                </div>
+                <div class="container" align="center">
+                    <input type="Submit" id="Submit" onclick="handleSubmit()" name="Submit" value="Submit" class="btn btn-primary"/><br><br>
+                </div>
+                <div class="container" align="center" id ="success-msg" style="display: none">
+                   <h2>Patient Successfully Added in the DB!!</h2><br><br>
+                </div>
+            </div>
+        </form>
+    </div>
+    </div>
+    <script>
+    function handleSubmit(){
+        document.getElementById("success-msg").style.display="block";
+    }
+    </script>
+{% endblock %}
+    

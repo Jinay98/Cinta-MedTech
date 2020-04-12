@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+    <title>Patient Details</title>
+{% endblock %}
+
+
+{% block body %}
+
+
+    <div class="container">
+        <div class="container" align="center"><b>
+            <p style="font-size: 35px">List Patient Details</p>
+        </b>
+        </div>
+        <br><br><br>
+        <div class="container">
+            {% for dict_item in list_of_patients %}
+            {% for key, value in dict_item.items %}
+                {% if key == 'id' %}
+                <h3>The ID of the Patient is: {{ value }}</h3>
+                {% elif key == 'name' %}
+                <h3>The Name of the Patient is: {{ value }}</h3>
+                {% elif key == 'age' %}
+                    <h3>The Age of the Patient is: {{ value }}</h3>
+                {% elif key == 'gender' %}
+                    <h3>The Gender of the Patient is: {{ value }}</h3>
+                    <hr><br/>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        </div>
+
+    </div>
+    </div>
+{% endblock %}
+
