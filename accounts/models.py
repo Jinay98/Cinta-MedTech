@@ -27,3 +27,12 @@ class Patient(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Attendance(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name="Attendance_Patient")
+    date = models.DateTimeField()
+    present_status = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.patient.name

@@ -4,24 +4,21 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from accounts.models import Patient
+from accounts.models import Patient, Attendance
 from django.urls import reverse
+import datetime
 
 
 # Create your views here.
 # @login_required 
 def home(request):
-    numbers = [1, 2, 3, 4, 5]
-    name = 'Jinay'
-    args = {'name': name, 'numbers': numbers}
-
     submit_button = request.POST.get('Submit')
     if submit_button == 'Submit':
         obj = Patient(name=request.POST.get('name'), age=int(request.POST.get('age')),
                       gender=request.POST.get('gender'))
         obj.save()
 
-    return render(request, 'accounts/home.html', args)
+    return render(request, 'accounts/home.html')
 
 
 def get_patient_details(request):
@@ -36,6 +33,60 @@ def get_patient_details(request):
         list_of_patients.append(patient_dict)
 
     return render(request, 'accounts/get_patient_details.html', {"list_of_patients": list_of_patients})
+
+
+def mark_patient_attendance(request, pk):
+    id = int(pk)
+    current_date = datetime.datetime.now()
+    patient = Patient.objects.get(id=id)
+
+    attendance = Attendance.objects.filter(patient=patient)
+
+    if len(attendance) == 0:
+        a = Attendance(patient=patient, date=current_date, present_status=True)
+        a.save()
+    else:
+        a = attendance[0]
+        a.date = current_date
+        a.present_status = True
+        a.save()
+
+    return render(request, 'accounts/home.html')
+
+
+def unmark_patient_attendance(request, pk):
+    id = int(pk)
+    current_date = datetime.datetime.now()
+    patient = Patient.objects.get(id=id)
+
+    attendance = Attendance.objects.filter(patient=patient)
+
+    if len(attendance) == 0:
+        a = Attendance(patient=patient, date=current_date, present_status=False)
+        a.save()
+    else:
+        a = attendance[0]
+        a.date = current_date
+        a.present_status = False
+        a.save()
+
+    return render(request, 'accounts/home.html')
+
+
+def show_present_patients(request):
+    patients = Patient.objects.all()
+
+    list_of_patients = []
+    for patient in patients:
+        if Attendance.objects.filter(patient=patient, present_status=True).exists():
+            patient_dict = {}
+            patient_dict["id"] = patient.id
+            patient_dict["name"] = patient.name
+            patient_dict["age"] = patient.age
+            patient_dict["gender"] = patient.gender
+            list_of_patients.append(patient_dict)
+
+    return render(request, 'accounts/get_present_patient_details.html', {"list_of_patients": list_of_patients})
 
 
 def register(request):

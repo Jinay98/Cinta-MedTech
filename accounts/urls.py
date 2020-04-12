@@ -3,10 +3,15 @@ from . import views
 from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView, LogoutView, PasswordResetView, PasswordResetDoneView, \
     PasswordResetConfirmView, PasswordResetCompleteView
+from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
     url(r'^$', views.home, name='home'),
     url(r'^get_patient_details/$', views.get_patient_details, name='get_patient_details'),
+    url(r'^mark_patient_attendance/(?P<pk>[0-9]+)$', csrf_exempt(views.mark_patient_attendance), name='mark_patient_attendance'),
+    url(r'^unmark_patient_attendance/(?P<pk>[0-9]+)$', csrf_exempt(views.unmark_patient_attendance),
+        name='unmark_patient_attendance'),
+    url(r'^show_present_patients/$', views.show_present_patients, name='show_present_patients'),
     url(r'^login/$', LoginView.as_view(template_name='accounts/login.html'), name='login'),
     url(r'^logout/$', LogoutView.as_view(template_name='accounts/logout.html'), name='logout'),
     url(r'^register/$', views.register, name='register'),

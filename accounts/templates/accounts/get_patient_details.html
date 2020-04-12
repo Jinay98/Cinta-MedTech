@@ -17,20 +17,35 @@
         <br><br><br>
         <div class="container">
             {% for dict_item in list_of_patients %}
-            {% for key, value in dict_item.items %}
-                {% if key == 'id' %}
-                <h3>The ID of the Patient is: {{ value }}</h3>
-                {% elif key == 'name' %}
-                <h3>The Name of the Patient is: {{ value }}</h3>
-                {% elif key == 'age' %}
-                    <h3>The Age of the Patient is: {{ value }}</h3>
-                {% elif key == 'gender' %}
-                    <h3>The Gender of the Patient is: {{ value }}</h3>
-                    <hr><br/>
-                {% endif %}
+                {% for key, value in dict_item.items %}
+                    {% if key == 'id' %}
+                        <h3>The ID of the Patient is: {{ value }}</h3>
+                    {% elif key == 'name' %}
+                        <h3>The Name of the Patient is: {{ value }}</h3>
+                    {% elif key == 'age' %}
+                        <h3>The Age of the Patient is: {{ value }}</h3>
+                    {% elif key == 'gender' %}
+                        <h3>The Gender of the Patient is: {{ value }}</h3>
+                        {% csrf_token %}
+                        <button class="btn btn-success" onclick="addToPresent({{ dict_item }})">Mark as Present</button>
+                        <br><br>
+                        {% csrf_token %}
+                        <button class="btn btn-danger" onclick="addToAbsent({{ dict_item }})">Mark as Absent</button>
+                        <br>
+                        <hr><br/>
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
-        {% endfor %}
         </div>
+        <script>
+            function addToPresent(value) {
+                window.location.href = "http://127.0.0.1:8001/account/mark_patient_attendance/" + value.id;
+            }
+
+            function addToAbsent(value) {
+                window.location.href = "http://127.0.0.1:8001/account/unmark_patient_attendance/" + value.id;
+            }
+        </script>
 
     </div>
     </div>
